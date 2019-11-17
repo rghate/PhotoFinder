@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="JO1-wg-r1I" customClass="PictureCell" customModule="PhotoFinder" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="248" height="198"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                <rect key="frame" x="0.0" y="0.0" width="248" height="198"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="qNM-pf-Hff" userLabel="Container View">
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="198"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nva-ba-jkN">
+                                <rect key="frame" x="0.0" y="0.0" width="248" height="198"/>
+                                <color key="backgroundColor" red="0.8637571383" green="0.8637571383" blue="0.8637571383" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nva-ba-jkN" firstAttribute="leading" secondItem="qNM-pf-Hff" secondAttribute="leading" id="D7n-bg-XPb"/>
+                            <constraint firstAttribute="trailing" secondItem="nva-ba-jkN" secondAttribute="trailing" id="Jyk-C5-kTc"/>
+                            <constraint firstAttribute="bottom" secondItem="nva-ba-jkN" secondAttribute="bottom" id="NKG-YT-zWh"/>
+                            <constraint firstItem="nva-ba-jkN" firstAttribute="top" secondItem="qNM-pf-Hff" secondAttribute="top" id="YQI-kw-tO2"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="qNM-pf-Hff" secondAttribute="trailing" id="Csz-oh-MqQ"/>
+                <constraint firstItem="qNM-pf-Hff" firstAttribute="top" secondItem="JO1-wg-r1I" secondAttribute="top" id="Ke6-sE-Sul"/>
+                <constraint firstAttribute="bottom" secondItem="qNM-pf-Hff" secondAttribute="bottom" id="SyC-wz-PvO"/>
+                <constraint firstItem="qNM-pf-Hff" firstAttribute="leading" secondItem="JO1-wg-r1I" secondAttribute="leading" id="d3j-AL-NHn"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="MnE-Ra-b9Y"/>
+            <size key="customSize" width="248" height="198"/>
+            <connections>
+                <outlet property="pictureView" destination="nva-ba-jkN" id="vLE-oX-vZO"/>
+            </connections>
+            <point key="canvasLocation" x="187.19999999999999" y="103.44827586206897"/>
+        </collectionViewCell>
+    </objects>
+</document>

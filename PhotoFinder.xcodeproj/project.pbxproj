@@ -16,6 +16,14 @@
 		C2690D6F237C2E9700B94FEA /* PhotoFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D6E237C2E9700B94FEA /* PhotoFinderUITests.swift */; };
 		C2690D80237C3D8600B94FEA /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D7F237C3D8600B94FEA /* UIView.swift */; };
 		C2690D83237C4B0400B94FEA /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D82237C4B0400B94FEA /* UIColor.swift */; };
+		C2690D8B237DE21100B94FEA /* PictureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2690D8A237DE21100B94FEA /* PictureCell.xib */; };
+		C2690D8D237DE2B600B94FEA /* PictureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D8C237DE2B600B94FEA /* PictureCell.swift */; };
+		C2690D90237DE3F700B94FEA /* GridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D8E237DE3F700B94FEA /* GridController.swift */; };
+		C2690D96237DE50700B94FEA /* CustomLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */; };
+		C2690D97237DE50700B94FEA /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D94237DE50700B94FEA /* CustomLayout.swift */; };
+		C2690D98237DE50700B94FEA /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */; };
+		C2690D9B237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D99237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift */; };
+		C2690D9F237DF97800B94FEA /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D9E237DF97800B94FEA /* Picture.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +59,14 @@
 		C2690D70237C2E9700B94FEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2690D7F237C3D8600B94FEA /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		C2690D82237C4B0400B94FEA /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		C2690D8A237DE21100B94FEA /* PictureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PictureCell.xib; sourceTree = "<group>"; };
+		C2690D8C237DE2B600B94FEA /* PictureCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureCell.swift; sourceTree = "<group>"; };
+		C2690D8E237DE3F700B94FEA /* GridController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridController.swift; sourceTree = "<group>"; };
+		C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayoutDelegate.swift; path = PhotoFinder/Views/CustomLayoutDelegate.swift; sourceTree = SOURCE_ROOT; };
+		C2690D94237DE50700B94FEA /* CustomLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayout.swift; path = PhotoFinder/Views/CustomLayout.swift; sourceTree = SOURCE_ROOT; };
+		C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayoutAttributes.swift; path = PhotoFinder/Views/CustomLayoutAttributes.swift; sourceTree = SOURCE_ROOT; };
+		C2690D99237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GridController+CustomLayoutDelegate.swift"; sourceTree = "<group>"; };
+		C2690D9E237DF97800B94FEA /* Picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,12 +117,13 @@
 		C2690D4B237C2E9400B94FEA /* PhotoFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C2690D9D237DF96F00B94FEA /* Model */,
+				C2690D87237DE1CB00B94FEA /* Storyboards & Xibs */,
+				C2690D84237DE03100B94FEA /* Views */,
 				C2690D81237C3DA200B94FEA /* Extensions */,
-				C2690D7E237C34A400B94FEA /* Controller */,
+				C2690D7E237C34A400B94FEA /* Controllers */,
 				C2690D4C237C2E9400B94FEA /* AppDelegate.swift */,
-				C2690D52237C2E9400B94FEA /* Main.storyboard */,
 				C2690D55237C2E9700B94FEA /* Assets.xcassets */,
-				C2690D57237C2E9700B94FEA /* LaunchScreen.storyboard */,
 				C2690D5A237C2E9700B94FEA /* Info.plist */,
 			);
 			path = PhotoFinder;
@@ -130,12 +147,14 @@
 			path = PhotoFinderUITests;
 			sourceTree = "<group>";
 		};
-		C2690D7E237C34A400B94FEA /* Controller */ = {
+		C2690D7E237C34A400B94FEA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C2690D99237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift */,
+				C2690D8E237DE3F700B94FEA /* GridController.swift */,
 				C2690D50237C2E9400B94FEA /* SearchController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		C2690D81237C3DA200B94FEA /* Extensions */ = {
@@ -145,6 +164,43 @@
 				C2690D82237C4B0400B94FEA /* UIColor.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C2690D84237DE03100B94FEA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D92237DE4F700B94FEA /* CustomLayout */,
+				C2690D8C237DE2B600B94FEA /* PictureCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C2690D87237DE1CB00B94FEA /* Storyboards & Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D57237C2E9700B94FEA /* LaunchScreen.storyboard */,
+				C2690D52237C2E9400B94FEA /* Main.storyboard */,
+				C2690D8A237DE21100B94FEA /* PictureCell.xib */,
+			);
+			path = "Storyboards & Xibs";
+			sourceTree = "<group>";
+		};
+		C2690D92237DE4F700B94FEA /* CustomLayout */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D94237DE50700B94FEA /* CustomLayout.swift */,
+				C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */,
+				C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */,
+			);
+			path = CustomLayout;
+			sourceTree = "<group>";
+		};
+		C2690D9D237DF96F00B94FEA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D9E237DF97800B94FEA /* Picture.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2690D59237C2E9700B94FEA /* LaunchScreen.storyboard in Resources */,
+				C2690D8B237DE21100B94FEA /* PictureCell.xib in Resources */,
 				C2690D56237C2E9700B94FEA /* Assets.xcassets in Resources */,
 				C2690D54237C2E9400B94FEA /* Main.storyboard in Resources */,
 			);
@@ -278,10 +335,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2690D9F237DF97800B94FEA /* Picture.swift in Sources */,
 				C2690D51237C2E9400B94FEA /* SearchController.swift in Sources */,
 				C2690D80237C3D8600B94FEA /* UIView.swift in Sources */,
+				C2690D98237DE50700B94FEA /* CustomLayoutAttributes.swift in Sources */,
 				C2690D4D237C2E9400B94FEA /* AppDelegate.swift in Sources */,
+				C2690D90237DE3F700B94FEA /* GridController.swift in Sources */,
+				C2690D8D237DE2B600B94FEA /* PictureCell.swift in Sources */,
 				C2690D83237C4B0400B94FEA /* UIColor.swift in Sources */,
+				C2690D97237DE50700B94FEA /* CustomLayout.swift in Sources */,
+				C2690D9B237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift in Sources */,
+				C2690D96237DE50700B94FEA /* CustomLayoutDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

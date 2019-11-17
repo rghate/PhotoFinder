@@ -9,6 +9,7 @@
 import UIKit
 
 class SearchController: UIViewController {
+    //MARK: Private variables
     private let defaultSideInset: CGFloat = 16
     private let messageLabelBottomOffset: CGFloat = 100
     private let textFieldHeight: CGFloat = 40
@@ -62,8 +63,10 @@ class SearchController: UIViewController {
         return button
     }()
     
-    @objc func handleSearch() {
-        print("Initiatinng search....")
+    @objc func handleSearch() {        
+        let layout = CustomLayout()
+        let gridVC = GridController(collectionViewLayout: layout)
+        navigationController?.pushViewController(gridVC, animated: true)
     }
     
     override func viewDidLoad() {
@@ -84,28 +87,35 @@ class SearchController: UIViewController {
         view.endEditing(true)
     }
     
+    //MARK: Private methods
     fileprivate func setupNavigationBar() {
+        //make navigation bar transparent
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.textColor]
+        navigationController?.navigationBar.tintColor = UIColor.textColor
         
         navigationItem.title = "Search"
     }
     
     fileprivate func setupViews() {
+        // background image
         view.addSubview(backgroundImageView)
         backgroundImageView.fillSuperview()
         view.sendSubviewToBack(backgroundImageView)
         
+        // search textfield
         view.addSubview(textField)
         textField.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: defaultSideInset, bottom: 0, right: defaultSideInset), size: .init(width: 0, height: textFieldHeight))
         textField.centerInSuperview()
         textField.delegate = self
         
+        // static message label
         view.addSubview(messageLabel)
         messageLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: textField.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: defaultSideInset, bottom: messageLabelBottomOffset, right: defaultSideInset))
         
+        // search buttonn
         view.addSubview(searchButton)
         searchButton.anchor(top: textField.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: searchButtonTopOffset, left: 0, bottom: 0, right: 0), size: .init(width: searchButtonWidth, height: searchButtonHeight))
         searchButton.centerInSuperview(centerInY: false)
