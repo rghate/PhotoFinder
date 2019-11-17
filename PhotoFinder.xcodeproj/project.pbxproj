@@ -19,11 +19,12 @@
 		C2690D8B237DE21100B94FEA /* PictureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2690D8A237DE21100B94FEA /* PictureCell.xib */; };
 		C2690D8D237DE2B600B94FEA /* PictureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D8C237DE2B600B94FEA /* PictureCell.swift */; };
 		C2690D90237DE3F700B94FEA /* GridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D8E237DE3F700B94FEA /* GridController.swift */; };
-		C2690D96237DE50700B94FEA /* CustomLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */; };
-		C2690D97237DE50700B94FEA /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D94237DE50700B94FEA /* CustomLayout.swift */; };
-		C2690D98237DE50700B94FEA /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */; };
 		C2690D9B237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D99237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift */; };
 		C2690D9F237DF97800B94FEA /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2690D9E237DF97800B94FEA /* Picture.swift */; };
+		C278BC402381A4C900764AE2 /* CustomLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC3D2381A4C900764AE2 /* CustomLayoutDelegate.swift */; };
+		C278BC412381A4C900764AE2 /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC3E2381A4C900764AE2 /* CustomLayoutAttributes.swift */; };
+		C278BC422381A4C900764AE2 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC3F2381A4C900764AE2 /* CustomLayout.swift */; };
+		C278BC442381A5A800764AE2 /* CustomFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC432381A5A800764AE2 /* CustomFooter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,11 +63,12 @@
 		C2690D8A237DE21100B94FEA /* PictureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PictureCell.xib; sourceTree = "<group>"; };
 		C2690D8C237DE2B600B94FEA /* PictureCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PictureCell.swift; sourceTree = "<group>"; };
 		C2690D8E237DE3F700B94FEA /* GridController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridController.swift; sourceTree = "<group>"; };
-		C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayoutDelegate.swift; path = PhotoFinder/Views/CustomLayoutDelegate.swift; sourceTree = SOURCE_ROOT; };
-		C2690D94237DE50700B94FEA /* CustomLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayout.swift; path = PhotoFinder/Views/CustomLayout.swift; sourceTree = SOURCE_ROOT; };
-		C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomLayoutAttributes.swift; path = PhotoFinder/Views/CustomLayoutAttributes.swift; sourceTree = SOURCE_ROOT; };
 		C2690D99237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GridController+CustomLayoutDelegate.swift"; sourceTree = "<group>"; };
 		C2690D9E237DF97800B94FEA /* Picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
+		C278BC3D2381A4C900764AE2 /* CustomLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLayoutDelegate.swift; sourceTree = "<group>"; };
+		C278BC3E2381A4C900764AE2 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
+		C278BC3F2381A4C900764AE2 /* CustomLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
+		C278BC432381A5A800764AE2 /* CustomFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFooter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 			children = (
 				C2690D92237DE4F700B94FEA /* CustomLayout */,
 				C2690D8C237DE2B600B94FEA /* PictureCell.swift */,
+				C278BC432381A5A800764AE2 /* CustomFooter.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,9 +191,9 @@
 		C2690D92237DE4F700B94FEA /* CustomLayout */ = {
 			isa = PBXGroup;
 			children = (
-				C2690D94237DE50700B94FEA /* CustomLayout.swift */,
-				C2690D95237DE50700B94FEA /* CustomLayoutAttributes.swift */,
-				C2690D93237DE50700B94FEA /* CustomLayoutDelegate.swift */,
+				C278BC3F2381A4C900764AE2 /* CustomLayout.swift */,
+				C278BC3E2381A4C900764AE2 /* CustomLayoutAttributes.swift */,
+				C278BC3D2381A4C900764AE2 /* CustomLayoutDelegate.swift */,
 			);
 			path = CustomLayout;
 			sourceTree = "<group>";
@@ -336,16 +339,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2690D9F237DF97800B94FEA /* Picture.swift in Sources */,
+				C278BC412381A4C900764AE2 /* CustomLayoutAttributes.swift in Sources */,
+				C278BC402381A4C900764AE2 /* CustomLayoutDelegate.swift in Sources */,
 				C2690D51237C2E9400B94FEA /* SearchController.swift in Sources */,
 				C2690D80237C3D8600B94FEA /* UIView.swift in Sources */,
-				C2690D98237DE50700B94FEA /* CustomLayoutAttributes.swift in Sources */,
 				C2690D4D237C2E9400B94FEA /* AppDelegate.swift in Sources */,
 				C2690D90237DE3F700B94FEA /* GridController.swift in Sources */,
+				C278BC442381A5A800764AE2 /* CustomFooter.swift in Sources */,
+				C278BC422381A4C900764AE2 /* CustomLayout.swift in Sources */,
 				C2690D8D237DE2B600B94FEA /* PictureCell.swift in Sources */,
 				C2690D83237C4B0400B94FEA /* UIColor.swift in Sources */,
-				C2690D97237DE50700B94FEA /* CustomLayout.swift in Sources */,
 				C2690D9B237DE5EA00B94FEA /* GridController+CustomLayoutDelegate.swift in Sources */,
-				C2690D96237DE50700B94FEA /* CustomLayoutDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

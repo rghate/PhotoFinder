@@ -12,6 +12,9 @@ class GridController: UICollectionViewController {
     //internal variables
     internal let interItemSpacing: CGFloat = 6  //spacing between columns of collectionView
     internal let lineSpacing: CGFloat = 6       //spacing between rows of collectionView
+    internal var footerView: CustomFooter?
+    internal let footerId = "footerId"
+
     internal var pictures: [Picture] = [Picture(image: #imageLiteral(resourceName: "img1"), width: 320, height: 480),
                                         Picture(image: #imageLiteral(resourceName: "img2"), width: 721, height: 480),
                                         Picture(image: #imageLiteral(resourceName: "img3"), width: 2400, height: 480),
@@ -33,6 +36,9 @@ class GridController: UICollectionViewController {
     private let pictureCellId = "pictureCellId"
     private let headerViewHeight: CGFloat = 0
     private let portraitContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)   //outer spacing of UICollectionView
+    
+    private lazy var topBarHeight = (self.navigationController?.navigationBar.frame.size.height ?? 0) +
+        UIApplication.shared.statusBarFrame.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,32 +73,37 @@ class GridController: UICollectionViewController {
         //register for picture cell
         let pictureCellNib = UINib(nibName: String(describing: PictureCell.self), bundle: nil)
         collectionView.register(pictureCellNib, forCellWithReuseIdentifier: pictureCellId)
+        
+        //register footer cell
+        collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
     }
 }
 
 extension GridController: UICollectionViewDelegateFlowLayout {
-    //header view size
-    func collectionView(collectionView: UICollectionView, sizeForSectionHeaderView section: Int) -> CGSize {
-        if pictures.count > 0 {
-            //if pictures available, display collectionview header with appropriate height
-            return CGSize(width: view.frame.width, height: headerViewHeight)
-        } else {
-            //else hide collectionview header
-            return CGSize(width: view.frame.width, height: 0)
-        }
-    }
-    
-    //footer view size
+    // Footer size
     func collectionView(collectionView: UICollectionView, sizeForSectionFooterView section: Int) -> CGSize {
         if pictures.count > 0 {
             //if pictures available, reduce footer height to zero to hide it
             return CGSize(width: view.frame.width, height: 0)
         } else {
             // if no pictures, display full screen footer to show either activity indicator or message for user
-            return CGSize(width: view.frame.width, height: 300)
+            return CGSize(width: view.frame.width, height: view.frame.height - topBarHeight)
         }
     }
     
+    // footer view
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        if kind == UICollectionView.elementKindSectionFooter {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! CustomFooter
+            
+            self.footerView = footer
+            
+            return footer
+        }
+        return UICollectionReusableView()
+    }
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pictures.count
     }
