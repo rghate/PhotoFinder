@@ -53,7 +53,8 @@ final class APIServiceManager {
                               URLQueryItem(name: QueryItemKey.searchTerm.rawValue, value: term),
                               URLQueryItem(name: QueryItemKey.imageType.rawValue, value: imageType.rawValue),
                               URLQueryItem(name: QueryItemKey.order.rawValue, value: order.rawValue),
-                              URLQueryItem(name: QueryItemKey.page.rawValue, value: "\(pageNumber)")]
+                              URLQueryItem(name: QueryItemKey.page.rawValue, value: "\(pageNumber)"),
+                              URLQueryItem(name: QueryItemKey.perPage.rawValue, value: "25")]
             
             // create an object of URLComponents to construct an url with all the query components and parameters
             let urlComponents = URLComponents(scheme: self.scheme, host: self.host, path: self.path, queryItems: queryItems)

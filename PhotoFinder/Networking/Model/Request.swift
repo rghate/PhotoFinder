@@ -15,6 +15,7 @@ enum QueryItemKey: String, CaseIterable {
     case imageType = "image_type"
     case order = "order"
     case page = "page"
+    case perPage = "per_page"
 }
 
 enum Order: String {

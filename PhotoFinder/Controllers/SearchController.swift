@@ -37,6 +37,7 @@ class SearchController: UIViewController {
         return label
     }()
     
+    // TODO: textfield search value should not exceed more than 100 characters  - UI test case
     fileprivate let textField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect

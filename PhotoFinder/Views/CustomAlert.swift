@@ -11,10 +11,12 @@ import UIKit
 class CustomAlert {
     
     func show(withTitle title: String, message: String, viewController: UIViewController) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        
-        viewController.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            viewController.present(alert, animated: true, completion: nil)
+        }
     }
     
 }

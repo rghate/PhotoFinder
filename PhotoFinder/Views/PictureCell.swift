@@ -11,28 +11,35 @@ import UIKit
 class PictureCell: UICollectionViewCell {
     
     //MARK: Public properties
-    var picture: Snap? {
+    var picture: Picture? {
         didSet {
-            if let picture = picture {
-                pictureView.image = picture.image
+            if let urlString = picture?.previewURL {
+                pictureView.loadImage(withUrlString: urlString)
             }
         }
     }
 
-    @IBOutlet fileprivate weak var pictureView: UIImageView! {
-        didSet {
-            pictureView.layer.cornerRadius = 8
-            pictureView.layer.masksToBounds = true
-            pictureView.contentMode = .scaleAspectFill
-            //default color before image loading
-            pictureView.backgroundColor = .placeholderBackgroundColor
-        }
-    }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
+    let pictureView: CustomImageView = {
+        let imageView = CustomImageView()
+        imageView.layer.cornerRadius = 8
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        //default color before image loading
+        imageView.backgroundColor = .placeholderBackgroundColor
+        return imageView
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
         backgroundColor = .placeholderBackgroundColor
+        
+        addSubview(pictureView)
+        pictureView.fillSuperview()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

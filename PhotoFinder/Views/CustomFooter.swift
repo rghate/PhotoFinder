@@ -47,28 +47,32 @@ class CustomFooter: UICollectionViewCell {
      Set text to message label, with activity indicator visibility flag.
      */
     func setMessage(withText text: String, visibleWaitIndicator: Bool) {
-        messageLabel.text = text
-        
-        if visibleWaitIndicator {
-            waitIndicator.startAnimating()
-        } else {
-            waitIndicator.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.messageLabel.text = text
+            
+            if visibleWaitIndicator {
+                self?.waitIndicator.startAnimating()
+            } else {
+                self?.waitIndicator.stopAnimating()
+            }
+            self?.waitIndicator.isHidden = !visibleWaitIndicator
         }
-        waitIndicator.isHidden = !visibleWaitIndicator
     }
 
     /**
         Reset text from message label, with activity indicator visibility flag.
      */
     func resetMessage(visibleWaitIndicator: Bool) {
-        messageLabel.text = ""
-        
-        if visibleWaitIndicator {
-            waitIndicator.startAnimating()
-        } else {
-            waitIndicator.stopAnimating()
-        }
-        waitIndicator.isHidden = !visibleWaitIndicator
+        DispatchQueue.main.async { [weak self] in
+            self?.messageLabel.text = ""
+            
+            if visibleWaitIndicator {
+                self?.waitIndicator.startAnimating()
+            } else {
+                self?.waitIndicator.stopAnimating()
+            }
+            self?.waitIndicator.isHidden = !visibleWaitIndicator
+            }
     }
 
 

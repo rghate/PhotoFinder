@@ -9,9 +9,10 @@
 import UIKit
 
 class GridController: UICollectionViewController {
-        //public variable
+    //public variable
     var searchTerm: String? {   //TODO: ui test for empty string from searchController
         didSet {
+            prepareBeforeDataDownload()
             downloadPictures()
         }
     }
@@ -21,23 +22,7 @@ class GridController: UICollectionViewController {
     internal let lineSpacing: CGFloat = 6       //spacing between rows of collectionView
     internal var footerView: CustomFooter?
     internal let footerId = "footerId"
-
-    internal var pictures: [Snap] = [Snap(image: #imageLiteral(resourceName: "img1"), width: 320, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img2"), width: 721, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img3"), width: 2400, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img4"), width: 320, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img5"), width: 718, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img6"), width: 320, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img7"), width: 1440, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img8"), width: 853, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img9"), width: 720, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img10"), width: 524, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img11"), width: 375, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img12"), width: 720, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img13"), width: 720, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img14"), width: 320, height: 480),
-                                        Snap(image: #imageLiteral(resourceName: "img15"), width: 320, height: 480)
-    ]
+    internal var pictures: [Picture] = [Picture]()
     
     //private variables
     private let pictureCellId = "pictureCellId"
@@ -50,8 +35,6 @@ class GridController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
-//        downloadPictures()
     }
     
     //MARK: private methods
@@ -80,27 +63,55 @@ class GridController: UICollectionViewController {
         //        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         //register for picture cell
-        let pictureCellNib = UINib(nibName: String(describing: PictureCell.self), bundle: nil)
-        collectionView.register(pictureCellNib, forCellWithReuseIdentifier: pictureCellId)
+        collectionView.register(PictureCell.self, forCellWithReuseIdentifier: pictureCellId)
         
         //register footer cell
         collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
     }
-
+    
     fileprivate func downloadPictures() {
-        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: 1) { result in
+        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: 1) { [weak self] result in
             switch result {
             case .failure(let err):
                 print("Error: ", err)
-                CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+                self?.prepareAfterDataDownload(err: err)
             case .success(let pictures):
-                print(pictures.count)
+                //                print(pictures.count)
+                self?.pictures = pictures
+                self?.prepareAfterDataDownload(err: nil)
             }
+            
         }
         if let err = err {
             CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
         }
+    }
+    
+    fileprivate func prepareBeforeDataDownload() {
+        //show wait indicator
+        footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
+        
+        pictures.removeAll()
+//        reloadCollectionView()
+    }
+    
+    fileprivate func prepareAfterDataDownload(err: CustomError?) {
+        //show wait indicator
+        footerView?.resetMessage(visibleWaitIndicator: false)
+        self.reloadCollectionView()
 
+        if let err = err {
+            DispatchQueue.main.async {
+                CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+                self.footerView?.setMessage(withText: "Something is wrong 😢.\n\n Drag down to try again.", visibleWaitIndicator:  false)
+            }
+        }
+        
+    }
+    fileprivate func reloadCollectionView() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -128,7 +139,7 @@ extension GridController: UICollectionViewDelegateFlowLayout {
         }
         return UICollectionReusableView()
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pictures.count
     }

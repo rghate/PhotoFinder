@@ -9,18 +9,6 @@
 import UIKit
 
 
-struct Snap/*: Decodable */{
-
-    let image: UIImage
-    let width: Int?
-    let height: Int?
-
-    init(image: UIImage, width: Int = 0, height: Int = 0) {
-        self.image = image
-        self.width = width
-        self.height = height
-    }
-}
 
 struct Picture: Decodable {
 /*
@@ -61,11 +49,11 @@ struct Picture: Decodable {
         previewWidth = try (container.decodeIfPresent(Int.self, forKey: .previewWidth) ?? 0)
         previewHeight = try (container.decodeIfPresent(Int.self, forKey: .previewHeight) ?? 0)
         previewURL = try container.decodeIfPresent(String.self, forKey: .previewURL)
-        
-        print("Width: \(previewWidth)")
-        print("Height: \(previewHeight)")
-        print("URL: \(previewURL ?? "")")
-        print("---------------------------")
+//        
+//        print("Width: \(previewWidth)")
+//        print("Height: \(previewHeight)")
+//        print("URL: \(previewURL ?? "")")
+//        print("---------------------------")
     }
 }
 
