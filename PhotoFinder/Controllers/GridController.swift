@@ -9,27 +9,34 @@
 import UIKit
 
 class GridController: UICollectionViewController {
+        //public variable
+    var searchTerm: String? {   //TODO: ui test for empty string from searchController
+        didSet {
+            downloadPictures()
+        }
+    }
+    
     //internal variables
     internal let interItemSpacing: CGFloat = 6  //spacing between columns of collectionView
     internal let lineSpacing: CGFloat = 6       //spacing between rows of collectionView
     internal var footerView: CustomFooter?
     internal let footerId = "footerId"
 
-    internal var pictures: [Picture] = [Picture(image: #imageLiteral(resourceName: "img1"), width: 320, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img2"), width: 721, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img3"), width: 2400, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img4"), width: 320, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img5"), width: 718, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img6"), width: 320, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img7"), width: 1440, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img8"), width: 853, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img9"), width: 720, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img10"), width: 524, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img11"), width: 375, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img12"), width: 720, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img13"), width: 720, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img14"), width: 320, height: 480),
-                                        Picture(image: #imageLiteral(resourceName: "img15"), width: 320, height: 480)
+    internal var pictures: [Snap] = [Snap(image: #imageLiteral(resourceName: "img1"), width: 320, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img2"), width: 721, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img3"), width: 2400, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img4"), width: 320, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img5"), width: 718, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img6"), width: 320, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img7"), width: 1440, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img8"), width: 853, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img9"), width: 720, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img10"), width: 524, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img11"), width: 375, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img12"), width: 720, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img13"), width: 720, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img14"), width: 320, height: 480),
+                                        Snap(image: #imageLiteral(resourceName: "img15"), width: 320, height: 480)
     ]
     
     //private variables
@@ -43,23 +50,25 @@ class GridController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        
+//        downloadPictures()
     }
     
     //MARK: private methods
-    private func setupViews() {
+    fileprivate func setupViews() {
         setupNavigationBar()
         setupCollectionView()
     }
     
     //MARK: navigationbar methods
-    private func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         navigationController?.hidesBarsOnSwipe = true
         //remove back button option title
         navigationController?.navigationBar.topItem?.title = " "
     }
     
     //MARK: collectionView methods
-    private func setupCollectionView() {
+    fileprivate func setupCollectionView() {
         collectionView.backgroundColor = .white
         
         let layout = collectionView.collectionViewLayout as? CustomLayout
@@ -76,6 +85,22 @@ class GridController: UICollectionViewController {
         
         //register footer cell
         collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
+    }
+
+    fileprivate func downloadPictures() {
+        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: 1) { result in
+            switch result {
+            case .failure(let err):
+                print("Error: ", err)
+                CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+            case .success(let pictures):
+                print(pictures.count)
+            }
+        }
+        if let err = err {
+            CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+        }
+
     }
 }
 

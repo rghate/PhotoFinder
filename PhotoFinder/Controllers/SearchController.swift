@@ -63,9 +63,15 @@ class SearchController: UIViewController {
         return button
     }()
     
-    @objc func handleSearch() {        
+    @objc func handleSearch() {
+        let searchTerm = textField.text ?? ""
+        if searchTerm.isEmpty {
+            CustomAlert().show(withTitle: "", message: "Please Enter search term", viewController: self)
+            return
+        }
         let layout = CustomLayout()
         let gridVC = GridController(collectionViewLayout: layout)
+        gridVC.searchTerm = searchTerm
         navigationController?.pushViewController(gridVC, animated: true)
     }
     

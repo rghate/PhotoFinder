@@ -11,7 +11,7 @@ import UIKit
 class PictureCell: UICollectionViewCell {
     
     //MARK: Public properties
-    var picture: Picture? {
+    var picture: Snap? {
         didSet {
             if let picture = picture {
                 pictureView.image = picture.image

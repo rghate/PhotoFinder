@@ -29,7 +29,7 @@ extension GridController: CustomLayoutDelegate {
         return calculateCellItemHeight(for: picture)
     }
     
-    private func calculateCellItemHeight(for picture: Picture) -> CGFloat {
+    private func calculateCellItemHeight(for picture: Snap) -> CGFloat {
         guard let imageWidth = picture.width else { return 0 }
         guard let imageHeight = picture.height else { return 0 }
         
