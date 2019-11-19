@@ -26,14 +26,15 @@ class GridController: UICollectionViewController {
     //private variables
     private let pictureCellId = "pictureCellId"
     private let headerViewHeight: CGFloat = 0
+    private let footerHeightSmall: CGFloat = 90
     private let portraitContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)   //outer spacing of UICollectionView
     
     private lazy var topBarHeight = (self.navigationController?.navigationBar.frame.size.height ?? 0) +
         UIApplication.shared.statusBarFrame.height
-
+    
     private var isFinishedPaging: Bool = false  //flag to check when images from last availabe page are downloaded
     private var currentPageNumber = 0  //holds the page number (for pegination) while downloading images
-
+    
     
     // MARK: Initializers
     
@@ -46,11 +47,12 @@ class GridController: UICollectionViewController {
     fileprivate func setupViews() {
         setupNavigationBar()
         setupCollectionView()
+        setupRefreshControl()
     }
     
     //MARK: navigationbar methods
     fileprivate func setupNavigationBar() {
-        navigationController?.hidesBarsOnSwipe = true
+//        navigationController?.hidesBarsOnSwipe = true
         //remove back button option title
         navigationController?.navigationBar.topItem?.title = " "
     }
@@ -71,31 +73,57 @@ class GridController: UICollectionViewController {
         collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
     }
     
+    //MARK: Refresh control methods and handlers
+    /**
+     Function to setup refresh control on collectionView
+     */
+    private func setupRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
+    }
+    
+    /**
+     download pictures to reload collectionView will latest images
+     */
+    @objc private func handleRefresh() {
+        prepareBeforeDataDownload()
+        downloadPictures()
+    }
+    
+    fileprivate func endRefresh() {
+        DispatchQueue.main.async {
+            self.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+    
     fileprivate func downloadPictures() {
         // if its a first page
         if currentPageNumber == 0 {
             prepareBeforeDataDownload()
         }
-            //show wait indicator
-            footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
+        //show wait indicator
+        footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
         
         currentPageNumber += 1
         let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .failure(let err):
                 print("Error: ", err)
-                self?.prepareAfterDataDownload(err: err)
+                self.prepareAfterDataDownload(err: err)
             case .success(let pictures):
                 if pictures.count > 0 {
                     //append newly downloaded pictures to the pictures array
                     pictures.forEach({ (picture) in
-                        self?.pictures.append(picture)
+                        self.pictures.append(picture)
                     })
                 } else {
                     // if no more pictures are available to download, mark paging as finished
-                    self?.isFinishedPaging = true
+                    self.isFinishedPaging = true
                 }
-                self?.prepareAfterDataDownload(err: nil)
+                self.prepareAfterDataDownload(err: nil)
             }
         }
         if let err = err {
@@ -106,7 +134,7 @@ class GridController: UICollectionViewController {
     fileprivate func prepareBeforeDataDownload() {
         isFinishedPaging = false
         currentPageNumber = 0
-
+        
         //show wait indicator
         footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
         
@@ -117,13 +145,14 @@ class GridController: UICollectionViewController {
     fileprivate func prepareAfterDataDownload(err: CustomError?) {
         //show wait indicator
         footerView?.resetMessage(visibleWaitIndicator: false)
+        self.endRefresh()
 
         if let err = err {
             CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
             self.footerView?.setMessage(withText: "Something is wrong 😢.\n Drag the page down to refresh.", visibleWaitIndicator:  false)
         } else {
             self.reloadCollectionView()
-
+            
             if isFinishedPaging {
                 // reset pageNumber counter if all the pictures are downloaded
                 currentPageNumber = 0
@@ -134,7 +163,7 @@ class GridController: UICollectionViewController {
             }
         }
     }
-
+    
     fileprivate func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -147,7 +176,7 @@ extension GridController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, sizeForSectionFooterView section: Int) -> CGSize {
         if pictures.count > 0 {
             //if pictures available, reduce footer height to zero to hide it
-            return CGSize(width: view.frame.width, height: 90)
+            return CGSize(width: view.frame.width, height: footerHeightSmall)
         } else {
             // if no pictures, display full screen footer to show either activity indicator or message for user
             return CGSize(width: view.frame.width, height: view.frame.height - topBarHeight)
