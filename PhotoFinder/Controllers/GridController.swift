@@ -12,7 +12,6 @@ class GridController: UICollectionViewController {
     //public variable
     var searchTerm: String? {   //TODO: ui test for empty string from searchController
         didSet {
-            prepareBeforeDataDownload()
             downloadPictures()
         }
     }
@@ -31,6 +30,12 @@ class GridController: UICollectionViewController {
     
     private lazy var topBarHeight = (self.navigationController?.navigationBar.frame.size.height ?? 0) +
         UIApplication.shared.statusBarFrame.height
+
+    private var isFinishedPaging: Bool = false  //flag to check when images from last availabe page are downloaded
+    private var currentPageNumber = 0  //holds the page number (for pegination) while downloading images
+
+    
+    // MARK: Initializers
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,9 +64,6 @@ class GridController: UICollectionViewController {
         
         collectionView.contentInset = portraitContentInsets
         
-        //start scrollview indicator below the headerViwe
-        //        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
         //register for picture cell
         collectionView.register(PictureCell.self, forCellWithReuseIdentifier: pictureCellId)
         
@@ -70,44 +72,69 @@ class GridController: UICollectionViewController {
     }
     
     fileprivate func downloadPictures() {
-        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: 1) { [weak self] result in
+        // if its a first page
+        if currentPageNumber == 0 {
+            prepareBeforeDataDownload()
+        }
+            //show wait indicator
+            footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
+        
+        currentPageNumber += 1
+        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber) { [weak self] result in
             switch result {
             case .failure(let err):
                 print("Error: ", err)
                 self?.prepareAfterDataDownload(err: err)
             case .success(let pictures):
-                //                print(pictures.count)
-                self?.pictures = pictures
+                if pictures.count > 0 {
+                    //append newly downloaded pictures to the pictures array
+                    pictures.forEach({ (picture) in
+                        self?.pictures.append(picture)
+                    })
+                } else {
+                    // if no more pictures are available to download, mark paging as finished
+                    self?.isFinishedPaging = true
+                }
                 self?.prepareAfterDataDownload(err: nil)
             }
-            
         }
         if let err = err {
-            CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+            prepareAfterDataDownload(err: err)
         }
     }
     
     fileprivate func prepareBeforeDataDownload() {
+        isFinishedPaging = false
+        currentPageNumber = 0
+
         //show wait indicator
         footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
         
         pictures.removeAll()
-//        reloadCollectionView()
+        reloadCollectionView()
     }
     
     fileprivate func prepareAfterDataDownload(err: CustomError?) {
         //show wait indicator
         footerView?.resetMessage(visibleWaitIndicator: false)
-        self.reloadCollectionView()
 
         if let err = err {
-            DispatchQueue.main.async {
-                CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
-                self.footerView?.setMessage(withText: "Something is wrong 😢.\n\n Drag down to try again.", visibleWaitIndicator:  false)
+            CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
+            self.footerView?.setMessage(withText: "Something is wrong 😢.\n Drag the page down to refresh.", visibleWaitIndicator:  false)
+        } else {
+            self.reloadCollectionView()
+
+            if isFinishedPaging {
+                // reset pageNumber counter if all the pictures are downloaded
+                currentPageNumber = 0
+                if self.pictures.count == 0 {
+                    // if no pictures downloaded while still being on first page, display 'zero results' message
+                    self.footerView?.setMessage(withText: "Zero results found", visibleWaitIndicator: false)
+                }
             }
         }
-        
     }
+
     fileprivate func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -120,7 +147,7 @@ extension GridController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, sizeForSectionFooterView section: Int) -> CGSize {
         if pictures.count > 0 {
             //if pictures available, reduce footer height to zero to hide it
-            return CGSize(width: view.frame.width, height: 0)
+            return CGSize(width: view.frame.width, height: 90)
         } else {
             // if no pictures, display full screen footer to show either activity indicator or message for user
             return CGSize(width: view.frame.width, height: view.frame.height - topBarHeight)
@@ -147,6 +174,11 @@ extension GridController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if pictures.count == 0 {
             return UICollectionViewCell()
+        }
+        
+        // if displayed all images available in pictures array, download more pictures from next page
+        if indexPath.item == self.pictures.count - 1 && !isFinishedPaging {
+            downloadPictures()
         }
         
         //return PictureCell if current selected layout is grid

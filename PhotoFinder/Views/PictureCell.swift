@@ -19,7 +19,6 @@ class PictureCell: UICollectionViewCell {
         }
     }
 
-
     let pictureView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.layer.cornerRadius = 8

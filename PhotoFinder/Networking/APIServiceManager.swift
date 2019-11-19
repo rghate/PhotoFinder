@@ -63,7 +63,7 @@ final class APIServiceManager {
                 print("Invalid URL")
                 return
             }
-            print(url)
+//            print(url)
             
             let requestTimeout: TimeInterval = 30
             

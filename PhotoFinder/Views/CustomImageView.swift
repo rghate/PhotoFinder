@@ -39,6 +39,7 @@ class CustomImageView: UIImageView {
             print("Invalid image url")
             return
         }
+
 //        print("NOT found in cache \(urlString)")
         // if image is not available in cache, download it and store it in cache
         URLSession.shared.dataTask(with: url) { [weak self] (data, resp, err) in
@@ -49,7 +50,6 @@ class CustomImageView: UIImageView {
             
             if let data = data {
                 DispatchQueue.main.async {
-                    
                     guard let imageToCache = UIImage(data: data) else { return }
                     
                     // extra verification to make sure that the current imageUrlString is same as the one stored before network request
