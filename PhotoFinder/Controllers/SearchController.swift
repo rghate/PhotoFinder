@@ -65,9 +65,11 @@ class SearchController: UIViewController {
     }()
     
     @objc func handleSearch() {
+        dismissKeyboard()
+        
         let searchTerm = textField.text ?? ""
         if searchTerm.isEmpty {
-            CustomAlert().show(withTitle: "", message: "Please Enter search term", viewController: self)
+            CustomAlert().show(withTitle: "", message: "Please Enter search term", viewController: self, completion: nil)
             return
         }
         let layout = CustomLayout()

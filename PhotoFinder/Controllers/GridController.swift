@@ -92,9 +92,7 @@ class GridController: UICollectionViewController {
     }
     
     fileprivate func endRefresh() {
-        DispatchQueue.main.async {
-            self.collectionView.refreshControl?.endRefreshing()
-        }
+        self.collectionView.refreshControl?.endRefreshing()
     }
 
     fileprivate func downloadPictures(refreshData: Bool) {
@@ -110,7 +108,7 @@ class GridController: UICollectionViewController {
         let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber, loadFreshData: refreshData) { [weak self] result in
             
             guard let self = self else { return }
-            
+
             switch result {
             case .failure(let err):
                 print("Error: ", err)
@@ -145,22 +143,28 @@ class GridController: UICollectionViewController {
     }
     
     fileprivate func prepareAfterDataDownload(err: CustomError?) {
-        //show wait indicator
-        footerView?.resetMessage(visibleWaitIndicator: false)
-        self.endRefresh()
-
-        if let err = err {
-            CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self)
-            self.footerView?.setMessage(withText: "Something is wrong 😢.\n Drag the page down to refresh.", visibleWaitIndicator:  false)
-        } else {
-            self.reloadCollectionView()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            //show wait indicator
+            self.footerView?.resetMessage(visibleWaitIndicator: false)
             
-            if isFinishedPaging {
-                // reset pageNumber counter if all the pictures are downloaded
-                currentPageNumber = 0
-                if self.pictures.count == 0 {
-                    // if no pictures downloaded while still being on first page, display 'zero results' message
-                    self.footerView?.setMessage(withText: "Zero results found", visibleWaitIndicator: false)
+            if let err = err {
+                CustomAlert().show(withTitle: "Error", message: err.localizedDescription, viewController: self) {
+                    self.endRefresh()
+                }
+                self.footerView?.setMessage(withText: "Something is wrong 😢.\n Drag the page down to refresh.", visibleWaitIndicator:  false)
+                
+            } else {
+                self.endRefresh()
+                self.reloadCollectionView()
+                
+                if self.isFinishedPaging {
+                    // reset pageNumber counter if all the pictures are downloaded
+                    self.currentPageNumber = 0
+                    if self.pictures.count == 0 {
+                        // if no pictures downloaded while still being on first page, display 'zero results' message
+                        self.footerView?.setMessage(withText: "Zero results found", visibleWaitIndicator: false)
+                    }
                 }
             }
         }
