@@ -33,7 +33,11 @@ final class APIServiceManager {
      
      @return CustomError object(optional) and array of Picture object.
      */
-    func getPictures(forSearchTerm term: String, imageType: ImageType = .photo, order: Order = .popular, pageNumber: Int,
+    func getPictures(forSearchTerm term: String,
+                     imageType: ImageType = .photo,
+                     order: Order = .popular,
+                     pageNumber: Int,
+                     loadFreshData: Bool,
                      completion: @escaping (Result<[Picture], CustomError>) -> Void) -> CustomError? {
         
         var responseError: CustomError? = nil
@@ -67,9 +71,12 @@ final class APIServiceManager {
             
             let requestTimeout: TimeInterval = 30
             
-            let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: requestTimeout) //TODO: check the cache policy
+            // use cache-policy to load cached data(if available), else make network request to download
+            let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: requestTimeout)
             
-            URLSession.shared.dataTask(with: request) { data, response, err in
+
+
+            let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
                 //error handling
                 if let err = err {
                     completion(.failure(CustomError(description: "Error: \(err.localizedDescription)")))
@@ -93,8 +100,21 @@ final class APIServiceManager {
                 } catch {
                     completion(.failure(CustomError(description: "Data parsing error")))
                 }
-            }.resume()
+            }
+            
+            // clear cache if fresh data needs to be loaded(happen on using UIRefreshControl on collectionview)
+            if loadFreshData {
+                self.clearURLCache(for: request, dataTask: dataTask)
+            }
+            
+            dataTask.resume()
         }
         return responseError
     }
+    
+    fileprivate func clearURLCache(for fetchRequest: URLRequest, dataTask: URLSessionDataTask) {
+        URLCache.shared.removeCachedResponse(for: fetchRequest)
+        URLCache.shared.removeCachedResponse(for: dataTask)
+    }
 }
+

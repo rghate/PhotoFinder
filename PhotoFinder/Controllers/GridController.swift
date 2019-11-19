@@ -12,7 +12,7 @@ class GridController: UICollectionViewController {
     //public variable
     var searchTerm: String? {   //TODO: ui test for empty string from searchController
         didSet {
-            downloadPictures()
+            downloadPictures(refreshData: false)
         }
     }
     
@@ -72,7 +72,7 @@ class GridController: UICollectionViewController {
         //register footer cell
         collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
     }
-    
+
     //MARK: Refresh control methods and handlers
     /**
      Function to setup refresh control on collectionView
@@ -88,7 +88,7 @@ class GridController: UICollectionViewController {
      */
     @objc private func handleRefresh() {
         prepareBeforeDataDownload()
-        downloadPictures()
+        downloadPictures(refreshData: true)
     }
     
     fileprivate func endRefresh() {
@@ -96,17 +96,19 @@ class GridController: UICollectionViewController {
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
-    
-    fileprivate func downloadPictures() {
+
+    fileprivate func downloadPictures(refreshData: Bool) {
         // if its a first page
         if currentPageNumber == 0 {
             prepareBeforeDataDownload()
+        } else {
+            //show wait indicator
+            footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
         }
-        //show wait indicator
-        footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
-        
+
         currentPageNumber += 1
-        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber) { [weak self] result in
+        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber, loadFreshData: refreshData) { [weak self] result in
+            
             guard let self = self else { return }
             
             switch result {
@@ -207,7 +209,7 @@ extension GridController: UICollectionViewDelegateFlowLayout {
         
         // if displayed all images available in pictures array, download more pictures from next page
         if indexPath.item == self.pictures.count - 1 && !isFinishedPaging {
-            downloadPictures()
+            downloadPictures(refreshData: false)
         }
         
         //return PictureCell if current selected layout is grid
