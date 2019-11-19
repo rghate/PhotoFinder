@@ -74,8 +74,6 @@ final class APIServiceManager {
             // use cache-policy to load cached data(if available), else make network request to download
             let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: requestTimeout)
             
-
-
             let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
                 //error handling
                 if let err = err {
@@ -102,19 +100,14 @@ final class APIServiceManager {
                 }
             }
             
-            // clear cache if fresh data needs to be loaded(happen on using UIRefreshControl on collectionview)
+            // clear cache before resuming dataTask if fresh data needs to be loaded(happens on using UIRefreshControl on collectionview)
             if loadFreshData {
-                self.clearURLCache(for: request, dataTask: dataTask)
+                SharedCache.shared.clearURLCache(for: request, dataTask: dataTask)
             }
             
             dataTask.resume()
         }
         return responseError
-    }
-    
-    fileprivate func clearURLCache(for fetchRequest: URLRequest, dataTask: URLSessionDataTask) {
-        URLCache.shared.removeCachedResponse(for: fetchRequest)
-        URLCache.shared.removeCachedResponse(for: dataTask)
     }
 }
 

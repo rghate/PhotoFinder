@@ -30,6 +30,7 @@
 		C278BC522382F06000764AE2 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC512382F06000764AE2 /* CustomAlert.swift */; };
 		C278BC542382F8BB00764AE2 /* URLComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC532382F8BB00764AE2 /* URLComponents.swift */; };
 		C278BC572382FFF900764AE2 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC562382FFF900764AE2 /* Request.swift */; };
+		C278BC5C23846D0800764AE2 /* SharedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278BC5B23846D0800764AE2 /* SharedCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		C278BC512382F06000764AE2 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		C278BC532382F8BB00764AE2 /* URLComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponents.swift; sourceTree = "<group>"; };
 		C278BC562382FFF900764AE2 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		C278BC5B23846D0800764AE2 /* SharedCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				C2690D84237DE03100B94FEA /* Views */,
 				C2690D81237C3DA200B94FEA /* Extensions */,
 				C2690D7E237C34A400B94FEA /* Controllers */,
+				C278BC582383063400764AE2 /* Utilities */,
 				C2690D4C237C2E9400B94FEA /* AppDelegate.swift */,
 				C2690D55237C2E9700B94FEA /* Assets.xcassets */,
 				C2690D5A237C2E9700B94FEA /* Info.plist */,
@@ -221,7 +224,6 @@
 		C278BC472381B6DA00764AE2 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				C278BC582383063400764AE2 /* Utilities */,
 				C278BC552382FFEE00764AE2 /* Model */,
 				C278BC4E2381BD5B00764AE2 /* Extension */,
 				C278BC482381B6E600764AE2 /* APIServiceManager.swift */,
@@ -248,6 +250,7 @@
 		C278BC582383063400764AE2 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C278BC5B23846D0800764AE2 /* SharedCache.swift */,
 				C278BC4C2381BBC700764AE2 /* CustomError.swift */,
 			);
 			path = Utilities;
@@ -397,6 +400,7 @@
 				C278BC542382F8BB00764AE2 /* URLComponents.swift in Sources */,
 				C278BC442381A5A800764AE2 /* CustomFooter.swift in Sources */,
 				C278BC492381B6E600764AE2 /* APIServiceManager.swift in Sources */,
+				C278BC5C23846D0800764AE2 /* SharedCache.swift in Sources */,
 				C278BC422381A4C900764AE2 /* CustomLayout.swift in Sources */,
 				C2690D8D237DE2B600B94FEA /* PictureCell.swift in Sources */,
 				C2690D83237C4B0400B94FEA /* UIColor.swift in Sources */,

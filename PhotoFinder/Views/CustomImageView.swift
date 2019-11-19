@@ -8,10 +8,7 @@
 
 import UIKit
 
-//CachedURLResponse     //TODO: check this one
-
-
-let imageCache: NSCache = NSCache<NSString, UIImage>()
+//let imageCache: NSCache = NSCache<NSString, UIImage>()
 
 class CustomImageView: UIImageView {
     private var imageUrlString: String?
@@ -21,12 +18,12 @@ class CustomImageView: UIImageView {
      @Param - url string of the image to be downloaded.
      */
     func loadImage(withUrlString urlString: String) {
-        
         //save urlString for varification purpose later
         imageUrlString = urlString
         
 //        print("Looking for \(urlString)")
         image = nil
+        let imageCache = SharedCache.shared.imageCache
         
         // check if image is already available in the cache. if so, load cached image.
         if let cachedImage = imageCache.object(forKey: urlString as NSString) {

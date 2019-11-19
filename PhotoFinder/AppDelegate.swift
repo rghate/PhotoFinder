@@ -14,15 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // setup URL cache in memory to cache response from server
-        let cacheSizeMegabytes = 10
-          URLCache.shared = URLCache(
-              memoryCapacity: cacheSizeMegabytes * 1024 * 1024,
-              diskCapacity: 0,
-              diskPath: nil)
-
         return true
     }
 
+    // clear all the cache (for storing downloaded images and URL cache for storing server response) used in application
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        SharedCache.shared.clearAllCache()
+    }
 }
 

@@ -175,6 +175,10 @@ class GridController: UICollectionViewController {
             self.collectionView.reloadData()
         }
     }
+    
+    override func didReceiveMemoryWarning() {
+        SharedCache.shared.clearAllCache()
+    }
 }
 
 extension GridController: UICollectionViewDelegateFlowLayout {
