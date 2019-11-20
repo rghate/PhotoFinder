@@ -16,7 +16,7 @@ final class APIServiceManager {
     private init() { }
     
     private func getAPIKey() -> String {
-        return "13197033-03eec42c293d2323112b4cca6" //TODO: Unit test for string length
+        return "13197033-03eec42c293d2323112b4cca6"
     }
     
     private let scheme = "https"
@@ -38,15 +38,12 @@ final class APIServiceManager {
                      order: Order = .popular,
                      pageNumber: Int,
                      loadFreshData: Bool,
-                     completion: @escaping (Result<[Picture], CustomError>) -> Void) -> CustomError? {
-        
-        var responseError: CustomError? = nil
-        
+                     completion: @escaping (Result<[Picture], CustomError>) -> Void) {
+
         //check page number
-        // TODO: Unit text for this condition
         if pageNumber < 0 {
-            responseError = CustomError(description: "Invalid page")
-            return responseError
+            completion(.failure(CustomError(description: "Invalid page")))
+            return
         }
         
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -106,7 +103,6 @@ final class APIServiceManager {
             
             dataTask.resume()
         }
-        return responseError
     }
 }
 

@@ -37,9 +37,9 @@ class SearchController: UIViewController {
         return label
     }()
     
-    // TODO: textfield search value should not exceed more than 100 characters  - UI test case
     fileprivate let searchTextField: UITextField = {
         let textField = UITextField()
+        textField.accessibilityIdentifier = "search textfield"
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .whileEditing
         textField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -52,6 +52,7 @@ class SearchController: UIViewController {
     
     fileprivate lazy var searchButton: UIButton = {
         let button = UIButton()
+        button.accessibilityIdentifier = "search button"
         button.setTitle("Search pictures", for: .normal)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
@@ -69,7 +70,7 @@ class SearchController: UIViewController {
         
         let searchTerm: String = searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if searchTerm.isEmpty {
-            CustomAlert().show(withTitle: "", message: "Please Enter search term", viewController: self, completion: nil)
+            CustomAlert().show(withTitle: "", message: "Please enter search term", viewController: self, completion: nil)
             return
         } else if searchTerm.count >= 100 {
             CustomAlert().show(withTitle: "Limit Exceeded", message: "Search string may not contain more than hundred characters", viewController: self, completion: nil)

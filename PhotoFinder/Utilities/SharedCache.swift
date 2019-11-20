@@ -29,12 +29,10 @@ class SharedCache {
         Function to clear image  as well as URLcache
      */
     func clearAllCache() {
-        DispatchQueue.global(qos: .background).async {
-            // clear image cache
-            self.imageCache.removeAllObjects()
-            // clear URL cache
-            URLCache.shared.removeAllCachedResponses()
-        }
+        // clear image cache
+        self.imageCache.removeAllObjects()
+        // clear URL cache
+        URLCache.shared.removeAllCachedResponses()
     }
     
     func clearURLCache(for fetchRequest: URLRequest, dataTask: URLSessionDataTask) {

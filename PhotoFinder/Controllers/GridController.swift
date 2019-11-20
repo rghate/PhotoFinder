@@ -10,7 +10,7 @@ import UIKit
 
 class GridController: UICollectionViewController {
     //public variable
-    var searchTerm: String? {   //TODO: ui test for empty string from searchController
+    var searchTerm: String? {
         didSet {
             downloadPictures(refreshData: false)
         }
@@ -109,7 +109,7 @@ class GridController: UICollectionViewController {
         }
         
         currentPageNumber += 1
-        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!,
+        APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!,
                                                        imageType: .photo,
                                                        order: .popular,
                                                        pageNumber: currentPageNumber,
@@ -133,9 +133,6 @@ class GridController: UICollectionViewController {
                 }
                 self.prepareAfterDataDownload(err: nil)
             }
-        }
-        if let err = err {
-            prepareAfterDataDownload(err: err)
         }
     }
     
@@ -184,9 +181,6 @@ class GridController: UICollectionViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        SharedCache.shared.clearAllCache()
-    }
 }
 
 extension GridController: UICollectionViewDelegateFlowLayout {
