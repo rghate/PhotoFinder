@@ -131,6 +131,8 @@
 		C2690D4B237C2E9400B94FEA /* PhotoFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C278BC5E2385565A00764AE2 /* Resources */,
+				C278BC5D2385564D00764AE2 /* Supporting files */,
 				C278BC472381B6DA00764AE2 /* Networking */,
 				C2690D9D237DF96F00B94FEA /* Model */,
 				C2690D87237DE1CB00B94FEA /* Storyboards & Xibs */,
@@ -138,9 +140,6 @@
 				C2690D81237C3DA200B94FEA /* Extensions */,
 				C2690D7E237C34A400B94FEA /* Controllers */,
 				C278BC582383063400764AE2 /* Utilities */,
-				C2690D4C237C2E9400B94FEA /* AppDelegate.swift */,
-				C2690D55237C2E9700B94FEA /* Assets.xcassets */,
-				C2690D5A237C2E9700B94FEA /* Info.plist */,
 			);
 			path = PhotoFinder;
 			sourceTree = "<group>";
@@ -254,6 +253,23 @@
 				C278BC4C2381BBC700764AE2 /* CustomError.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C278BC5D2385564D00764AE2 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D4C237C2E9400B94FEA /* AppDelegate.swift */,
+				C2690D5A237C2E9700B94FEA /* Info.plist */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		C278BC5E2385565A00764AE2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C2690D55237C2E9700B94FEA /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -580,7 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 54Z55RGA5W;
-				INFOPLIST_FILE = PhotoFinder/Info.plist;
+				INFOPLIST_FILE = "PhotoFinder/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,7 +614,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 54Z55RGA5W;
-				INFOPLIST_FILE = PhotoFinder/Info.plist;
+				INFOPLIST_FILE = "PhotoFinder/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

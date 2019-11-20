@@ -11,12 +11,16 @@ import UIKit
 extension GridController: CustomLayoutDelegate {
     
     //spacing between rows
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return lineSpacing
     }
     
     //spacing between columns
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return interItemSpacing
     }
     
@@ -24,7 +28,8 @@ extension GridController: CustomLayoutDelegate {
         return getItemWidth()
     }
     
-    func collectionView(collectionView: UICollectionView, heightForItemAt indexPath: IndexPath) -> CGFloat {
+    func collectionView(collectionView: UICollectionView,
+                        heightForItemAt indexPath: IndexPath) -> CGFloat {
         let picture = pictures[indexPath.item]
         return calculateCellItemHeight(for: picture)
     }
@@ -33,7 +38,7 @@ extension GridController: CustomLayoutDelegate {
         let imageWidth = picture.previewWidth
         let imageHeight = picture.previewHeight
         
-        //calculate image height and width maintaining its aspect ratio
+        //calculate image height and width while maintaining its aspect ratio
         let cellWidth = getItemWidth()
         let scale: CGFloat = cellWidth / CGFloat(imageWidth)
         let scaledImgHeight: CGFloat = CGFloat(imageHeight) * scale //scale up/down image height based on scale value of width to keep the aspect ratio of the image.
@@ -48,9 +53,9 @@ extension GridController: CustomLayoutDelegate {
     private func getItemWidth() -> CGFloat {
         switch UIDevice().model.lowercased() {
         case "ipad":
-            return 250
+            return avgIPadCellWidth
         default:
-            return 170
+            return avgIPhoneCellWidth
         }
     }
     

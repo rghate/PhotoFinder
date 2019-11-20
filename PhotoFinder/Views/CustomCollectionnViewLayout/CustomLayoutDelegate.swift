@@ -12,7 +12,7 @@ import UIKit
 /**
  CustomLayoutDelegate.
  */
-@objc public protocol CustomLayoutDelegate {
+@objc protocol CustomLayoutDelegate {
     /**
      Size for section header. Optional.
      
@@ -56,7 +56,7 @@ import UIKit
     func collectionView(collectionView: UICollectionView,
                         heightForItemAt indexPath: IndexPath) -> CGFloat
     
-
+    
     /**
      Spacing between the rows of collectionView.
      
@@ -79,5 +79,7 @@ import UIKit
      
      Returns spacing between the columns
      */
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
 }

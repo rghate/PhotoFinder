@@ -38,7 +38,7 @@ class SearchController: UIViewController {
     }()
     
     // TODO: textfield search value should not exceed more than 100 characters  - UI test case
-    fileprivate let textField: UITextField = {
+    fileprivate let searchTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.clearButtonMode = .whileEditing
@@ -67,9 +67,12 @@ class SearchController: UIViewController {
     @objc func handleSearch() {
         dismissKeyboard()
         
-        let searchTerm = textField.text ?? ""
+        let searchTerm: String = searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if searchTerm.isEmpty {
             CustomAlert().show(withTitle: "", message: "Please Enter search term", viewController: self, completion: nil)
+            return
+        } else if searchTerm.count >= 100 {
+            CustomAlert().show(withTitle: "Limit Exceeded", message: "Search string may not contain more than hundred characters", viewController: self, completion: nil)
             return
         }
         let layout = CustomLayout()
@@ -81,7 +84,7 @@ class SearchController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .primaryBackgroundColor
         
         setupNavigationBar()
         setupViews()
@@ -115,23 +118,28 @@ class SearchController: UIViewController {
         view.sendSubviewToBack(backgroundImageView)
         
         // search textfield
-        view.addSubview(textField)
-        textField.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: defaultSideInset, bottom: 0, right: defaultSideInset), size: .init(width: 0, height: textFieldHeight))
-        textField.centerInSuperview()
-        textField.delegate = self
+        view.addSubview(searchTextField)
+        searchTextField.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor,
+                               padding: .init(top: 0, left: defaultSideInset, bottom: 0, right: defaultSideInset),
+                               size: .init(width: 0, height: textFieldHeight))
+        searchTextField.centerInSuperview()
+        searchTextField.delegate = self
         
         // static message label
         view.addSubview(messageLabel)
-        messageLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: textField.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: defaultSideInset, bottom: messageLabelBottomOffset, right: defaultSideInset))
+        messageLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: searchTextField.bottomAnchor, trailing: view.trailingAnchor,
+                            padding: .init(top: 0, left: defaultSideInset, bottom: messageLabelBottomOffset, right: defaultSideInset))
         
         // search buttonn
         view.addSubview(searchButton)
-        searchButton.anchor(top: textField.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: searchButtonTopOffset, left: 0, bottom: 0, right: 0), size: .init(width: searchButtonWidth, height: searchButtonHeight))
+        searchButton.anchor(top: searchTextField.bottomAnchor, leading: nil, bottom: nil, trailing: nil,
+                            padding: .init(top: searchButtonTopOffset, left: 0, bottom: 0, right: 0),
+                            size: .init(width: searchButtonWidth, height: searchButtonHeight))
         searchButton.centerInSuperview(centerInY: false)
     }
     
     /**
-     Setup keyboard show/hide notification to scroll screen
+     Setup keyboard show/hide notification to move screen up/down based on keyboard visibility
      */
     fileprivate func setupKeyboardNotifications() {
         let center = NotificationCenter.default
@@ -160,7 +168,11 @@ class SearchController: UIViewController {
      Reset Y position back to original value when keyboard is hidden
      */
     @objc func keyboardWillBeHidden(note: Notification) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 1,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseOut, animations: {
             self.view.transform = .identity
         })
         
@@ -168,10 +180,9 @@ class SearchController: UIViewController {
 }
 
 extension SearchController: UITextFieldDelegate {
-    // handle 'Search' button on keyboard
+    // handle 'Search' return key on keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
-        
         handleSearch()
         
         return true

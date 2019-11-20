@@ -16,25 +16,27 @@ class GridController: UICollectionViewController {
         }
     }
     
-    //internal variables
+    //Internal variables
     internal let interItemSpacing: CGFloat = 6  //spacing between columns of collectionView
     internal let lineSpacing: CGFloat = 6       //spacing between rows of collectionView
-    internal var footerView: CustomFooter?
-    internal let footerId = "footerId"
+    internal let avgIPadCellWidth: CGFloat = 250
+    internal let avgIPhoneCellWidth: CGFloat = 170
     internal var pictures: [Picture] = [Picture]()
     
     //private variables
+    private var footerView: CustomFooter?
+    private let footerId = "footerId"
     private let pictureCellId = "pictureCellId"
     private let headerViewHeight: CGFloat = 0
     private let footerHeightSmall: CGFloat = 90
-    private let portraitContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)   //outer spacing of UICollectionView
+    private let edgeInset: CGFloat = 10
     
+    private lazy var portraitContentInsets = UIEdgeInsets(top: 0, left: edgeInset, bottom: 0, right: edgeInset)   //outer spacing of UICollectionView
     private lazy var topBarHeight = (self.navigationController?.navigationBar.frame.size.height ?? 0) +
         UIApplication.shared.statusBarFrame.height
     
     private var isFinishedPaging: Bool = false  //flag to check when images from last availabe page are downloaded
     private var currentPageNumber = 0  //holds the page number (for pegination) while downloading images
-    
     
     // MARK: Initializers
     
@@ -52,14 +54,14 @@ class GridController: UICollectionViewController {
     
     //MARK: navigationbar methods
     fileprivate func setupNavigationBar() {
-//        navigationController?.hidesBarsOnSwipe = true
+        //        navigationController?.hidesBarsOnSwipe = true
         //remove back button option title
         navigationController?.navigationBar.topItem?.title = " "
     }
     
     //MARK: collectionView methods
     fileprivate func setupCollectionView() {
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .primaryBackgroundColor
         
         let layout = collectionView.collectionViewLayout as? CustomLayout
         layout?.delegate = self
@@ -70,9 +72,11 @@ class GridController: UICollectionViewController {
         collectionView.register(PictureCell.self, forCellWithReuseIdentifier: pictureCellId)
         
         //register footer cell
-        collectionView?.register(CustomFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
+        collectionView?.register(CustomFooter.self,
+                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                 withReuseIdentifier: footerId)
     }
-
+    
     //MARK: Refresh control methods and handlers
     /**
      Function to setup refresh control on collectionView
@@ -94,7 +98,7 @@ class GridController: UICollectionViewController {
     fileprivate func endRefresh() {
         self.collectionView.refreshControl?.endRefreshing()
     }
-
+    
     fileprivate func downloadPictures(refreshData: Bool) {
         // if its a first page
         if currentPageNumber == 0 {
@@ -103,12 +107,16 @@ class GridController: UICollectionViewController {
             //show wait indicator
             footerView?.setMessage(withText: "Please wait", visibleWaitIndicator: true)
         }
-
+        
         currentPageNumber += 1
-        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!, imageType: .photo, order: .popular, pageNumber: currentPageNumber, loadFreshData: refreshData) { [weak self] result in
+        let err = APIServiceManager.shared.getPictures(forSearchTerm: searchTerm!,
+                                                       imageType: .photo,
+                                                       order: .popular,
+                                                       pageNumber: currentPageNumber,
+                                                       loadFreshData: refreshData) { [weak self] result in
             
             guard let self = self else { return }
-
+            
             switch result {
             case .failure(let err):
                 print("Error: ", err)
@@ -183,18 +191,21 @@ class GridController: UICollectionViewController {
 
 extension GridController: UICollectionViewDelegateFlowLayout {
     // Footer size
-    func collectionView(collectionView: UICollectionView, sizeForSectionFooterView section: Int) -> CGSize {
+    func collectionView(collectionView: UICollectionView,
+                        sizeForSectionFooterView section: Int) -> CGSize {
         if pictures.count > 0 {
-            //if pictures available, reduce footer height to zero to hide it
+            //if pictures available, reduce footer height
             return CGSize(width: view.frame.width, height: footerHeightSmall)
         } else {
-            // if no pictures, display full screen footer to show either activity indicator or message for user
+            // if no pictures, display full screen footer to show either activity indicator and/or message for user
             return CGSize(width: view.frame.width, height: view.frame.height - topBarHeight)
         }
     }
     
     // footer view
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 viewForSupplementaryElementOfKind kind: String,
+                                 at indexPath: IndexPath) -> UICollectionReusableView {
         
         if kind == UICollectionView.elementKindSectionFooter {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath) as! CustomFooter
@@ -206,11 +217,13 @@ extension GridController: UICollectionViewDelegateFlowLayout {
         return UICollectionReusableView()
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
         return pictures.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if pictures.count == 0 {
             return UICollectionViewCell()
         }

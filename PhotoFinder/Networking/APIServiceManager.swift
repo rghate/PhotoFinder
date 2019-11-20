@@ -9,10 +9,10 @@ import Foundation
 
 final class APIServiceManager {
     
-    //singleton
+    // MARK: singleton
     static let shared = APIServiceManager()
     
-    //private initializer
+    // MARK: private initializer
     private init() { }
     
     private func getAPIKey() -> String {
@@ -23,7 +23,7 @@ final class APIServiceManager {
     private let host = "pixabay.com"
     private let path = "/api/"
     
-    //public methods
+    //MARK: public methods
     /**
      Download gallery images.
      @params term - search keywords
@@ -67,7 +67,6 @@ final class APIServiceManager {
                 print("Invalid URL")
                 return
             }
-//            print(url)
             
             let requestTimeout: TimeInterval = 30
             
@@ -80,7 +79,7 @@ final class APIServiceManager {
                     completion(.failure(CustomError(description: "Error: \(err.localizedDescription)")))
                     return
                 }
-
+                
                 if data == nil {
                     completion(.failure(CustomError(description: "Response data error")))
                     return

@@ -10,8 +10,10 @@ import UIKit
 
 class SharedCache {
     static let shared = SharedCache()
-    
+    //MARK: Public variables
     let imageCache: NSCache = NSCache<NSString, UIImage>()
+
+    //MARK: Initializers
 
     private init() {
         // setup URL cache in memory to cache response from server
@@ -21,6 +23,8 @@ class SharedCache {
               diskCapacity: 0,
               diskPath: nil)
     }
+    
+    //MARK: Public functions
     /**
         Function to clear image  as well as URLcache
      */

@@ -12,11 +12,11 @@
 import UIKit
 
 class CustomFooter: UICollectionViewCell {
-
+    
     //MARK: Private properties
-
+    
     private let waitIndicator: UIActivityIndicatorView = {
-       let indicatorView = UIActivityIndicatorView()
+        let indicatorView = UIActivityIndicatorView()
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
         indicatorView.hidesWhenStopped = false
         indicatorView.style = .whiteLarge
@@ -25,21 +25,27 @@ class CustomFooter: UICollectionViewCell {
     }()
     
     private let messageLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Please wait"
         label.textColor = .textColor
         label.font = UIFont.systemFont(ofSize: 18)
         label.numberOfLines = 0
         label.textAlignment = .center
-
+        
         return label
     }()
-
+    
+    //MARK: Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: Public methods
@@ -56,9 +62,9 @@ class CustomFooter: UICollectionViewCell {
         }
         self.waitIndicator.isHidden = !visibleWaitIndicator
     }
-
+    
     /**
-        Reset text from message label, with activity indicator visibility flag.
+     Reset text from message label, with activity indicator visibility flag.
      */
     func resetMessage(visibleWaitIndicator: Bool) {
         self.messageLabel.text = ""
@@ -70,23 +76,18 @@ class CustomFooter: UICollectionViewCell {
         }
         self.waitIndicator.isHidden = !visibleWaitIndicator
     }
-
-
+    
+    
     //MARK: Private methods
-
+    
     private func setupViews() {
         addSubview(messageLabel)
         //messageLabel constraints
         messageLabel.centerInSuperview()
-
+        
         addSubview(waitIndicator)
         //waitIndicator constraints - place it above messageLabel
         waitIndicator.anchor(top: nil, leading: leadingAnchor, bottom: messageLabel.topAnchor, trailing: trailingAnchor)
         waitIndicator.centerInSuperview(centerInX: true, centerInY: false)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

@@ -8,8 +8,6 @@
 
 import UIKit
 
-//let imageCache: NSCache = NSCache<NSString, UIImage>()
-
 class CustomImageView: UIImageView {
     private var imageUrlString: String?
     /**
@@ -18,26 +16,22 @@ class CustomImageView: UIImageView {
      @Param - url string of the image to be downloaded.
      */
     func loadImage(withUrlString urlString: String) {
-        //save urlString for varification purpose later
-        imageUrlString = urlString
-        
-//        print("Looking for \(urlString)")
-        image = nil
-        let imageCache = SharedCache.shared.imageCache
-        
-        // check if image is already available in the cache. if so, load cached image.
-        if let cachedImage = imageCache.object(forKey: urlString as NSString) {
-//            print("Found in cache")
-            self.image = cachedImage
-            return
-        }
-        
         guard let url = URL(string: urlString) else {
             print("Invalid image url")
             return
         }
-
-//        print("NOT found in cache \(urlString)")
+        
+        image = nil
+        //save urlString for varification purpose later
+        imageUrlString = urlString
+        
+        let imageCache = SharedCache.shared.imageCache
+        // check if image is already available in the cache. if so, load cached image.
+        if let cachedImage = imageCache.object(forKey: urlString as NSString) {
+            self.image = cachedImage
+            return
+        }
+        
         // if image is not available in cache, download it and store it in cache
         URLSession.shared.dataTask(with: url) { [weak self] (data, resp, err) in
             if let err = err {
@@ -53,8 +47,6 @@ class CustomImageView: UIImageView {
                     if self?.imageUrlString == urlString {
                         self?.image = imageToCache
                     }
-//                    print("caching: \(urlString)")
-                    
                     imageCache.setObject(imageToCache, forKey: urlString as NSString)
                 }
             }

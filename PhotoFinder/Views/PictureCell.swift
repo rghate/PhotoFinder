@@ -18,8 +18,10 @@ class PictureCell: UICollectionViewCell {
             }
         }
     }
-
-    let pictureView: CustomImageView = {
+    
+    //MARK: Private properties
+    
+    fileprivate let pictureView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
@@ -29,12 +31,15 @@ class PictureCell: UICollectionViewCell {
         return imageView
     }()
     
+    //MARK: Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .placeholderBackgroundColor
         
         addSubview(pictureView)
+        //make pictureview size same as the cell size
         pictureView.fillSuperview()
     }
     

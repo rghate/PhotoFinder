@@ -13,7 +13,9 @@ extension URLComponents {
          host: String,
          path: String,
          queryItems: [URLQueryItem]) {
+        
         self.init()
+        
         self.scheme = scheme
         self.host = host
         self.path = path
